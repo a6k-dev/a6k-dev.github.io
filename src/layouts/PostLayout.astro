@@ -2,42 +2,59 @@
 import { type BlogSchema } from "../content/config";
 import BaseLayout from "./BaseLayout.astro";
 import dayjs from "dayjs";
-import localizedFormat from "dayjs/plugin/localizedFormat";
+import { getCategory } from "../config";
 
 export interface Props extends BlogSchema {}
 
-const { title, description, pubDate, updatedDate, heroImage, badge, tags = [] } = Astro.props;
-dayjs.extend(localizedFormat);
-const displayDate = dayjs(pubDate).format("ll")
+const { title, description, pubDate, updatedDate, heroImage, badge, category, tags = [] } = Astro.props;
+const displayDate = dayjs(pubDate).format("YYYY년 MM월 DD일");
+const cat = getCategory(category);
 import { Image } from "astro:assets";
 ---
 
-<BaseLayout title={title} description={description} image={heroImage}, ogType="article">
+<BaseLayout title={title} description={description} image={heroImage} ogType="article">
   <main class="md:flex md:justify-center">
-    <article class="prose prose-lg max-w-[750px] prose-img:mx-auto">
-      {heroImage && <Image width={750} height={422} format="webp" src={heroImage} alt={title} class="w-full mb-6" />}
-      <h1 class="title my-2 text-4xl font-bold">{title}</h1>
-      {pubDate && <time>{displayDate}</time>}
-      <br />
-      {badge && <div class="badge badge-secondary my-1">{badge}</div>}
-      {
-        tags &&
-          tags.map((tag) => (
-            <a href={`/blog/tag/${tag}`} class="badge badge-outline ml-2 no-underline">
-              {tag}
+    <article class="prose prose-lg max-w-[750px] prose-img:mx-auto prose-headings:scroll-mt-20">
+      <div class="flex items-center gap-2 text-sm not-prose mb-3">
+        {
+          cat && (
+            <a href={`/blog/category/${cat.slug}`} class="text-primary font-semibold hover:underline">
+              {cat.icon} {cat.label}
             </a>
-          ))
-      }
+          )
+        }
+        <time class="opacity-60">{displayDate}</time>
+        {badge && <span class="badge badge-sm badge-secondary">{badge}</span>}
+      </div>
+
+      <h1 class="title my-2 text-4xl font-bold">{title}</h1>
+
+      <div class="not-prose flex flex-wrap gap-2 mt-3 mb-2">
+        {
+          tags &&
+            tags.map((tag) => (
+              <a href={`/blog/tag/${tag}`} class="badge badge-outline badge-sm hover:badge-primary">
+                #{tag}
+              </a>
+            ))
+        }
+      </div>
+
       {
         updatedDate && (
-          <div>
-            {" "}
-            Last updated on <time>{updatedDate}</time>{" "}
+          <div class="text-sm opacity-60 not-prose">
+            마지막 수정: <time>{updatedDate}</time>
           </div>
         )
       }
+
+      {heroImage && <Image width={750} height={422} format="webp" src={heroImage} alt={title} class="w-full my-6 rounded-lg" />}
+
       <div class="divider my-2"></div>
       <slot />
+
+      <div class="divider mt-10"></div>
+      <a href="/blog/" class="not-prose text-sm text-primary hover:underline">← 전체 글 목록으로</a>
     </article>
   </main>
 </BaseLayout>

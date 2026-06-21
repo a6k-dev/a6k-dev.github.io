@@ -2,20 +2,23 @@
 import SideBarFooter from "./SideBarFooter.astro";
 import { Image } from "astro:assets";
 import SideBarMenu from "./SideBarMenu.astro";
+import { PROFILE } from "../config";
 const { sideBarActiveItemID } = Astro.props;
 ---
 
 <div class="drawer-side z-40">
   <label for="my-drawer" class="drawer-overlay"></label>
   <aside class="px-2 pt-2 h-auto min-h-full w-[19rem] bg-base-200 text-base-content flex flex-col">
-    <div class="w-fit mx-auto mt-5 mb-6">
+    <div class="w-full flex flex-col items-center mt-6 mb-2">
       <a href="/">
-        <div class="avatar transition ease-in-out hover:scale-[102%] block m-auto">
-          <div class="w-[8.5rem]">
-            <Image class="mask mask-circle" format="webp" width={300} height={300} src="/profile.webp" alt="Profile image" />
+        <div class="avatar transition ease-in-out hover:scale-[102%] block">
+          <div class="w-[8rem] rounded-full ring ring-base-300 ring-offset-base-100 ring-offset-2">
+            <Image class="mask mask-circle" format="webp" width={300} height={300} src={PROFILE.avatar} alt={PROFILE.name} />
           </div>
         </div>
       </a>
+      <a href="/" class="mt-4 text-xl font-bold hover:opacity-80">{PROFILE.name}</a>
+      <p class="text-sm opacity-70 mt-1 text-center px-4">{PROFILE.bio}</p>
     </div>
     <SideBarMenu sideBarActiveItemID={sideBarActiveItemID} />
     <SideBarFooter />

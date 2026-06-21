@@ -1,0 +1,45 @@
+---
+import dayjs from "dayjs";
+import { getCategory } from "../config";
+
+const { title, desc, url, pubDate, category, tags = [], badge } = Astro.props;
+const cat = getCategory(category);
+const displayDate = pubDate ? dayjs(pubDate).format("YYYY.MM.DD") : "";
+---
+
+<article class="py-6">
+  <div class="flex items-center gap-2 text-sm mb-2">
+    {
+      cat && (
+        <a href={`/blog/category/${cat.slug}`} class="text-primary font-semibold hover:underline">
+          {cat.icon} {cat.label}
+        </a>
+      )
+    }
+    <span class="opacity-50">{displayDate}</span>
+    {badge && <span class="badge badge-sm badge-secondary">{badge}</span>}
+  </div>
+
+  <a href={url} class="group">
+    <h2 class="text-2xl font-bold leading-snug group-hover:text-primary transition-colors">
+      {title}
+    </h2>
+  </a>
+
+  {desc && <p class="mt-2 opacity-75 leading-relaxed line-clamp-3">{desc}</p>}
+
+  <div class="mt-3 flex flex-wrap items-center gap-2">
+    {
+      tags &&
+        tags.map((tag) => (
+          <a href={`/blog/tag/${tag}`} class="badge badge-outline badge-sm hover:badge-primary">
+            #{tag}
+          </a>
+        ))
+    }
+  </div>
+
+  <a href={url} class="inline-block mt-3 text-sm font-medium text-primary hover:underline">
+    계속 읽기 →
+  </a>
+</article>

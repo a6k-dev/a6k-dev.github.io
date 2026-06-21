@@ -1,6 +1,6 @@
 {
-  "name": "astrofy",
-  "description": "Astrofy is a free and open-source template for your Personal Portfolio Website built with Astro and TailwindCSS. Create in minutes a website with Blog, CV, Project Section, Store and RSS Feed.",
+  "name": "a6k-dev-blog",
+  "description": "데이터 엔지니어링과 AI를 주제로 한 기술 블로그. Astro + TailwindCSS 로 제작.",
   "type": "module",
   "version": "3.0.0",
   "private": true,

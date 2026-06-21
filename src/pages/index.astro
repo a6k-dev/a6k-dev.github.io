@@ -1,78 +1,72 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import HorizontalCard from "../components/HorizontalCard.astro";
+import PostListItem from "../components/PostListItem.astro";
 import { getCollection } from "astro:content";
-import createSlug from "../lib/createSlug"
+import createSlug from "../lib/createSlug";
+import { PROFILE, CATEGORIES } from "../config";
 
-const posts = (await getCollection("blog")).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-
-const last_posts = posts.slice(0, 3);
+const posts = (await getCollection("blog")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+const last_posts = posts.slice(0, 5);
 ---
 
 <BaseLayout sideBarActiveItemID="home">
-  <div class="pb-12 mt-5">
-    <div class="text-xl py-1">Hey there 👋</div>
-    <div class="text-5xl font-bold">I'm Manuel Ernesto</div>
-    <div class="text-3xl py-3 font-bold">Software Engineer and Entrepreneur</div>
-    <div class="py-2">
-      <text class="text-lg">
-        This is <b>Astrofy</b> a free and open-source template for your Personal Portfolio Website built with Astro and TailwindCSS.
-        Create in minutes a website with Blog, CV, Project Section, Store and RSS Feed. I hope you find
-        it useful!
-      </text>
+  <section class="pb-8 mt-4 border-b border-base-300">
+    <div class="text-lg opacity-70">안녕하세요 👋</div>
+    <h1 class="text-4xl md:text-5xl font-bold mt-2">{PROFILE.name} 의 데이터 · AI 블로그</h1>
+    <p class="py-4 text-lg leading-relaxed opacity-80">
+      데이터 엔지니어링과 AI를 공부하며 배운 것들을 정리합니다.
+      데이터 파이프라인, MLOps, LLM 그리고 그 사이의 모든 것에 대한 기록입니다.
+    </p>
+    <div class="mt-2 flex flex-wrap gap-2">
+      <a class="btn btn-sm btn-primary" href="/blog/">전체 글 보기</a>
+      <a class="btn btn-sm btn-outline" href="/about">About</a>
     </div>
-    <div class="mt-8">
-      <a class="btn" href="https://twitter.com/manuelernestog" target="_blank"> Let's connect!</a>
-      <a href="https://github.com/manuelernestog/astrofy" target="_blank" class="btn btn-outline ml-5">
-        Get This template
-      </a>
+  </section>
+
+  <section class="mt-8">
+    <h2 class="text-2xl font-bold mb-2">카테고리</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
+      {
+        CATEGORIES.map((cat) => (
+          <a
+            href={`/blog/category/${cat.slug}`}
+            class="card bg-base-200 hover:bg-base-300 transition-colors p-4"
+          >
+            <div class="text-lg font-bold">
+              {cat.icon} {cat.label}
+            </div>
+            <div class="text-sm opacity-70 mt-1">{cat.description}</div>
+          </a>
+        ))
+      }
     </div>
-  </div>
+  </section>
 
-  <div>
-    <div class="text-3xl w-full font-bold mb-2">My last projects {"</>"}</div>
-  </div>
-
-  <HorizontalCard
-    title="Demo Project 1"
-    img="/post_img.webp"
-    desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-    url="#"
-    badge="NEW"
-  />
-  <div class="divider my-0"></div>
-  <HorizontalCard
-    title="Demo Project 2"
-    img="/post_img.webp"
-    desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-    url="#"
-  />
-  <div class="divider my-0"></div>
-  <HorizontalCard
-    title="Demo Project 3"
-    img="/post_img.webp"
-    desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-    url="#"
-    badge="FOSS"
-  />
-
-  <div>
-    <div class="text-3xl w-full font-bold mb-5 mt-10">Latest from blog</div>
-  </div>
-
-  {
-    last_posts.map((post) => (
-      <>
-        <HorizontalCard
-          title={post.data.title}
-          img={post.data.heroImage}
-          desc={post.data.description}
-          url={"/blog/" + createSlug(post.data.title, post.slug)}
-          target="_self"
-          badge={post.data.badge}
-        />
-        <div class="divider my-0" />
-      </>
-    ))
-  }
+  <section class="mt-10">
+    <div class="flex items-end justify-between">
+      <h2 class="text-2xl font-bold">최근 글</h2>
+      <a href="/blog/" class="text-sm text-primary hover:underline">더보기 →</a>
+    </div>
+    <div class="divide-y divide-base-300 mt-2">
+      {
+        last_posts.length === 0 ? (
+          <p class="py-8 opacity-70">아직 작성된 글이 없습니다.</p>
+        ) : (
+          last_posts.map((post) => (
+            <PostListItem
+              title={post.data.title}
+              desc={post.data.description}
+              url={"/blog/" + createSlug(post.data.title, post.slug)}
+              pubDate={post.data.pubDate}
+              category={post.data.category}
+              tags={post.data.tags}
+              badge={post.data.badge}
+            />
+          ))
+        )
+      }
+    </div>
+  </section>
 </BaseLayout>

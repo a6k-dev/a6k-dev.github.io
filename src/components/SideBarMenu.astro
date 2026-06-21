@@ -1,26 +1,46 @@
 ---
+import { CATEGORIES } from "../config";
 const { sideBarActiveItemID } = Astro.props;
-const activeClass = "bg-base-300"; // For primary color replace with `active` class
+const activeClass = "bg-base-300 font-semibold";
 ---
 
-<ul class="menu grow shrink menu-md overflow-y-auto">
-    <li><a class="py-3 text-base" id="home" href="/">Home</a></li>
-    <li><a class="py-3 text-base" id="projects" href="/projects">Projects</a></li>
-    <li><a class="py-3 text-base" id="services" href="/services">Services</a></li>
-    <li><a class="py-3 text-base" id="store" href="/store">Store</a></li>
-    <li><a class="py-3 text-base" id="blog" href="/blog/">Blog</a></li>
-    <li><a class="py-3 text-base" id="cv" href="/cv">CV</a></li>
-    <li>
-        <a
-            class="py-3 text-base"
-            href="mailto:contact.manuelernestog@gmail.com"
-            target="_blank"
-            referrerpolicy="no-referrer-when-downgrade">Contact</a
-        >
-    </li>
+<ul class="menu grow shrink menu-md overflow-y-auto px-1">
+  <li>
+    <a class="py-3 text-base" id="home" href="/">
+      <span class="w-5 text-center">🏠</span> Home
+    </a>
+  </li>
+  <li>
+    <a class="py-3 text-base" id="blog" href="/blog/">
+      <span class="w-5 text-center">📚</span> 전체 글
+    </a>
+  </li>
+
+  <li class="menu-title mt-2 text-xs uppercase tracking-wider opacity-60">Categories</li>
+  {
+    CATEGORIES.map((cat) => (
+      <li>
+        <a class="py-3 text-base" id={`cat-${cat.slug}`} href={`/blog/category/${cat.slug}`}>
+          <span class="w-5 text-center">{cat.icon}</span> {cat.label}
+        </a>
+      </li>
+    ))
+  }
+
+  <li class="menu-title mt-2 text-xs uppercase tracking-wider opacity-60">More</li>
+  <li>
+    <a class="py-3 text-base" id="tags" href="/tags">
+      <span class="w-5 text-center">🏷️</span> 태그
+    </a>
+  </li>
+  <li>
+    <a class="py-3 text-base" id="about" href="/about">
+      <span class="w-5 text-center">👋</span> About
+    </a>
+  </li>
 </ul>
 
-<script define:vars={{ sideBarActiveItemID: sideBarActiveItemID, activeClass: activeClass }}>
-const activeItemElem = document.getElementById(sideBarActiveItemID);
-activeItemElem && activeItemElem.classList.add(activeClass);
+<script define:vars={{ sideBarActiveItemID, activeClass }}>
+  const activeItemElem = document.getElementById(sideBarActiveItemID);
+  activeItemElem && activeItemElem.classList.add(...activeClass.split(" "));
 </script>

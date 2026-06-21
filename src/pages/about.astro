@@ -1,0 +1,37 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { PROFILE, SOCIALS } from "../config";
+---
+
+<BaseLayout title="About" sideBarActiveItemID="about">
+  <article class="prose prose-lg max-w-[750px]">
+    <h1>👋 About</h1>
+    <p>
+      안녕하세요, <strong>{PROFILE.name}</strong> 입니다. {PROFILE.bio}.
+      데이터 엔지니어링과 AI를 공부하며 배운 것들을 이 블로그에 기록하고 있습니다.
+    </p>
+
+    <h2>관심사</h2>
+    <ul>
+      <li><strong>데이터 엔지니어링</strong> — 데이터 파이프라인, 워크플로 오케스트레이션(Airflow), dbt, 데이터 웨어하우스</li>
+      <li><strong>AI · 머신러닝</strong> — LLM, 추천/검색 시스템, 논문 리뷰</li>
+      <li><strong>MLOps</strong> — 모델 서빙, 실험 관리, 피처 스토어</li>
+      <li><strong>개발</strong> — Python, SQL, Kubernetes, 클라우드</li>
+    </ul>
+
+    <h2>이 블로그에 대해</h2>
+    <p>
+      이 블로그는 <a href="https://astro.build" target="_blank">Astro</a> 와
+      <a href="https://tailwindcss.com" target="_blank">Tailwind CSS</a> 로 만들어졌으며,
+      GitHub Pages 로 배포됩니다. 데이터쟁이의 메모장이라고 생각해 주세요. 📝
+    </p>
+
+    <h2>Contact</h2>
+    <ul>
+      {SOCIALS.github && <li><a href={SOCIALS.github} target="_blank">GitHub</a></li>}
+      {SOCIALS.linkedin && <li><a href={SOCIALS.linkedin} target="_blank">LinkedIn</a></li>}
+      {SOCIALS.youtube && <li><a href={SOCIALS.youtube} target="_blank">YouTube</a></li>}
+      {SOCIALS.email && <li><a href={`mailto:${SOCIALS.email}`}>{SOCIALS.email}</a></li>}
+    </ul>
+  </article>
+</BaseLayout>

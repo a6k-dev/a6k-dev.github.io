@@ -4,36 +4,37 @@ import PostListItem from "../../../../components/PostListItem.astro";
 import Pagination from "../../../../components/Pagination.astro";
 import { getCollection } from "astro:content";
 import createSlug from "../../../../lib/createSlug";
+import { CATEGORIES, getCategory } from "../../../../config";
 
 export async function getStaticPaths({ paginate }) {
   const all_posts = await getCollection("blog");
   all_posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-  const all_tags = [...new Set(all_posts.flatMap((post) => post.data.tags || []))];
-
-  return all_tags.flatMap((tag) => {
-    const filtred_posts = all_posts.filter((post) => post.data.tags?.includes(tag));
-    return paginate(filtred_posts, {
-      params: { tag },
+  return CATEGORIES.flatMap((cat) => {
+    const filtered = all_posts.filter((post) => post.data.category === cat.slug);
+    return paginate(filtered, {
+      params: { category: cat.slug },
       pageSize: 10,
     });
   });
 }
 
 const { page } = Astro.props;
-const params = Astro.params;
+const { category } = Astro.params;
+const cat = getCategory(category);
 ---
 
-<BaseLayout title={"태그 - " + params.tag} sideBarActiveItemID="tags">
+<BaseLayout title={`${cat?.label ?? category} 카테고리`} sideBarActiveItemID={`cat-${category}`}>
   <div class="mb-2 border-b border-base-300 pb-4">
-    <h1 class="text-3xl font-bold">#{params.tag}</h1>
+    <h1 class="text-3xl font-bold">{cat?.icon} {cat?.label ?? category}</h1>
+    {cat?.description && <p class="opacity-70 mt-2">{cat.description}</p>}
     <p class="opacity-60 text-sm mt-1">총 {page.total}개의 글</p>
   </div>
 
   {
     page.data.length === 0 ? (
       <div class="bg-base-200 border-l-4 border-secondary w-full p-4 min-w-full mt-4">
-        <p>이 태그에는 아직 글이 없습니다.</p>
+        <p>이 카테고리에는 아직 글이 없습니다.</p>
       </div>
     ) : (
       <div class="divide-y divide-base-300">
