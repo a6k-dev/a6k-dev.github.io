@@ -8,7 +8,7 @@ export const SITE_DESCRIPTION =
 export const PROFILE = {
   name: "A6K",
   // 한 줄 소개
-  bio: "메모가 습관인 데이터쟁이입니다",
+  bio: "배우고 기록하는 데이터쟁이입니다",
   // 직무/역할
   role: "Data Engineer",
   avatar: "/profile.webp",
