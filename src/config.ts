@@ -28,34 +28,22 @@ export const SOCIALS = {
 // slug 는 URL(/blog/category/<slug>)과 글 frontmatter 의 category 값으로 사용됩니다.
 export const CATEGORIES = [
   {
+    slug: "ai-ml",
+    label: "AI",
+    icon: "🤖",
+    description: "LLM, 딥러닝, 추천/검색, 논문 리뷰 등 AI 전반",
+  },
+  {
     slug: "data-engineering",
     label: "데이터 엔지니어링",
     icon: "🛠️",
     description: "Airflow, dbt, Spark, Kafka, BigQuery, Snowflake 등 데이터 파이프라인 이야기",
   },
   {
-    slug: "ai-ml",
-    label: "AI · 머신러닝",
-    icon: "🤖",
-    description: "LLM, 딥러닝, 추천/검색, 논문 리뷰 등 AI 전반",
-  },
-  {
-    slug: "mlops",
-    label: "MLOps",
-    icon: "⚙️",
-    description: "모델 서빙, 피처 스토어, 실험 관리, 파이프라인 자동화",
-  },
-  {
     slug: "development",
     label: "개발",
     icon: "💻",
     description: "Python, SQL, Kubernetes, 클라우드, 개발 도구",
-  },
-  {
-    slug: "diary",
-    label: "회고 · 일상",
-    icon: "📝",
-    description: "회고, 학습 기록, 생각 정리",
   },
 ] as const;
 
